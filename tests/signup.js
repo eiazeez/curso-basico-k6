@@ -3,6 +3,15 @@ import { sleep, check } from 'k6'
 
 import uuid from './libs/uuid.js'
 
+export const options = {
+    vus: 10,
+    duration: '30s',
+    thresholds: {
+        http_req_duration: ['p(95)<2000'],
+        http_req_failed: ['rate<0.01']
+    }
+}
+
 export default function () {
 
     const url = 'http://localhost:3333/signup'
@@ -24,4 +33,5 @@ export default function () {
         'status should be 201': (r) => r.status === 201
     })
 
+    sleep(1)
 }
